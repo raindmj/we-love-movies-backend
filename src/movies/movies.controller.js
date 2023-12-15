@@ -60,25 +60,7 @@ async function movieExists(req, res, next) {
 async function read(req, res, next) {
   //get movie from the movieExists function using res.locals
   const { movie } = res.locals;
-
-  const {
-    movie_id,
-    title,
-    runtime_in_minutes,
-    rating,
-    description,
-    image_url,
-  } = movie;
-
-  const reformattedMovie = {
-    movie_id,
-    title,
-    runtime_in_minutes,
-    rating,
-    description,
-    image_url,
-  };
-  res.json({ data: reformattedMovie });
+  res.json({ data: movie });
 }
 
 async function listTheaters(req, res, next) {
