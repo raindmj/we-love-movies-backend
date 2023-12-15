@@ -1,6 +1,27 @@
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const service = require("./movies.service");
 
+function removeCreatedUpdatedFromMovies(movies) {
+  return movies.map((movie) => {
+    const {
+      movie_id,
+      title,
+      runtime_in_minutes,
+      rating,
+      description,
+      image_url,
+    } = movie;
+    return {
+      id: movie_id,
+      title,
+      runtime_in_minutes,
+      rating,
+      description,
+      image_url,
+    };
+  });
+}
+
 async function list(req, res, next) {
   // console.log("QUERY:", req.query);
   const { is_showing } = req.query;
@@ -9,11 +30,11 @@ async function list(req, res, next) {
   if (is_showing === "true") {
     const isShowingMovies = await service.listIsShowing();
     // console.log("IS SHOWING MOVIES:", isShowingMovies);
-    res.json({ data: isShowingMovies });
+    res.json({ data: removeCreatedUpdatedFromMovies(isShowingMovies) });
   } else {
     const allMovies = await service.list();
     // console.log("ALL MOVIES:", allMovies);
-    res.json({ data: allMovies });
+    res.json({ data: removeCreatedUpdatedFromMovies(allMovies) });
   }
 }
 
@@ -39,7 +60,25 @@ async function movieExists(req, res, next) {
 async function read(req, res, next) {
   //get movie from the movieExists function using res.locals
   const { movie } = res.locals;
-  res.json({ data: movie });
+
+  const {
+    movie_id,
+    title,
+    runtime_in_minutes,
+    rating,
+    description,
+    image_url,
+  } = movie;
+
+  const reformattedMovie = {
+    movie_id,
+    title,
+    runtime_in_minutes,
+    rating,
+    description,
+    image_url,
+  };
+  res.json({ data: reformattedMovie });
 }
 
 async function listTheaters(req, res, next) {
