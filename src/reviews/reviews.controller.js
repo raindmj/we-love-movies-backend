@@ -29,14 +29,21 @@ async function update(req, res, next) {
     review_id: res.locals.review.review_id,
   };
   const data = await service.update(updatedReview);
+  console.log(data);
   res.json({ data });
+}
+
+async function destroy(req, res, next) {
+  await service.destroy(res.locals.review.review_id);
+  res.sendStatus(204);
 }
 
 module.exports = {
   read: [asyncErrorBoundary(reviewExists), read],
   update: [
     asyncErrorBoundary(reviewExists),
-    hasProperties("content", "score"),
+    // hasProperties("content", "score"),
     asyncErrorBoundary(update),
   ],
+  destroy: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
 };
