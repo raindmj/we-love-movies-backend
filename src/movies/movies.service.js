@@ -16,11 +16,11 @@ function listIsShowing() {
 
 function read(movieId) {
   return (
-    knex("movies as m")
+    knex("movies")
       //select all movies
-      .select("m.*")
+      .select("*")
       //where movie_id = movieId params
-      .where({ "m.movie_id": movieId })
+      .where({ movie_id: movieId })
       //without first(), gives an array with the object
       .first()
   );
