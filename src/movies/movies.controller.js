@@ -12,7 +12,7 @@ function removeCreatedUpdatedFromMovies(movies) {
       image_url,
     } = movie;
     return {
-      id: movie_id,
+      movie_id,
       title,
       runtime_in_minutes,
       rating,
