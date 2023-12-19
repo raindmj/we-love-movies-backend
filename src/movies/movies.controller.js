@@ -79,6 +79,12 @@ async function listReviews(req, res, next) {
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(movieExists), asyncErrorBoundary(read)],
-  listTheaters: asyncErrorBoundary(listTheaters),
-  listReviews: asyncErrorBoundary(listReviews),
+  listTheaters: [
+    asyncErrorBoundary(movieExists),
+    asyncErrorBoundary(listTheaters),
+  ],
+  listReviews: [
+    asyncErrorBoundary(movieExists),
+    asyncErrorBoundary(listReviews),
+  ],
 };
