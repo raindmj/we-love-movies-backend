@@ -2,10 +2,12 @@ const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
 
+//check if review exists for given review id
+//if exists, go to next function
+//if it doesn't exist, go next to error
 async function reviewExists(req, res, next) {
   const { reviewId } = req.params;
   const review = await service.read(reviewId);
-  // console.log(review);
   if (review) {
     res.locals.review = review;
     return next();
