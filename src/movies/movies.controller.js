@@ -23,33 +23,23 @@ function removeCreatedUpdatedFromMovies(movies) {
 }
 
 async function list(req, res, next) {
-  // console.log("QUERY:", req.query);
   const { is_showing } = req.query;
-  // console.log("IS SHOWING OR NOT:", is_showing);
-  // console.log(typeof is_showing);
   if (is_showing === "true") {
     const isShowingMovies = await service.listIsShowing();
-    // console.log("IS SHOWING MOVIES:", isShowingMovies);
     res.json({ data: removeCreatedUpdatedFromMovies(isShowingMovies) });
   } else {
     const allMovies = await service.list();
-    // console.log("ALL MOVIES:", allMovies);
     res.json({ data: removeCreatedUpdatedFromMovies(allMovies) });
   }
 }
 
 async function movieExists(req, res, next) {
-  //get movieId from params
   const { movieId } = req.params;
-  //get the movie requested by the param
   const movie = await service.read(movieId);
-  //if the movie is found (exists),
   if (movie) {
     res.locals.movie = movie;
-    //go to next function
     return next();
   } else {
-    //if movie is not found with given movieId (doesn't exist), then go next with status and error message
     next({
       status: 404,
       message: "Movie cannot be found.",
@@ -72,7 +62,6 @@ async function listTheaters(req, res, next) {
 async function listReviews(req, res, next) {
   const { movieId } = req.params;
   const allReviewsWithMovieId = await service.listReviews(movieId);
-  // console.log("LOOK HERE ***********", allReviewsWithMovieId);
   res.json({ data: allReviewsWithMovieId });
 }
 

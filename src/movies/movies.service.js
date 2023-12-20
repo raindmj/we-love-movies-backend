@@ -17,9 +17,7 @@ function listIsShowing() {
 function read(movieId) {
   return (
     knex("movies")
-      //select all movies
       .select("*")
-      //where movie_id = movieId params
       .where({ movie_id: movieId })
       //without first(), gives an array with the object
       .first()
@@ -43,17 +41,6 @@ const addCritic = mapProperties({
   critics_updated_at: "critic.updated_at",
 });
 
-/* const addCritic = mapProperties({
-  critic_id: "critic.critic_id",
-  preferred_name: "critic.preferred_name",
-  surname: "critic.surname",
-  organization_name: "critic.organization_name",
-  created_at: "critic.created_at",
-  updated_at: "critic.updated_at",
-}); */
-
-//TODO HELPPPPPPPPPPPPPPPPPPPPPP**************
-//not returning all the requested data
 function listReviews(movieId) {
   return knex("movies as m")
     .join("reviews as r", "r.movie_id", "m.movie_id")
@@ -61,9 +48,7 @@ function listReviews(movieId) {
     .select(
       "c.*",
       "r.*",
-      // "r.updated_at as reviews_updated_at",
       "c.updated_at as critics_updated_at",
-      // "r.created_at as reviews_created_at",
       "c.created_at as critics_created_at",
       "c.critic_id as new_critic_id"
     )
