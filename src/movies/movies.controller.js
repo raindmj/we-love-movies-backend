@@ -34,6 +34,9 @@ async function list(req, res, next) {
   }
 }
 
+//check if movie exists for given movie id
+//if exists, go to next function
+//if it doesn't exist, go next to error
 async function movieExists(req, res, next) {
   const { movieId } = req.params;
   const movie = await service.read(movieId);
