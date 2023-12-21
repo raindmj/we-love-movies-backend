@@ -1,6 +1,7 @@
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const service = require("./movies.service");
 
+//remove created_at and updated_at from movies
 function removeCreatedUpdatedFromMovies(movies) {
   return movies.map((movie) => {
     const {

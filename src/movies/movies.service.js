@@ -1,10 +1,12 @@
 const knex = require("../db/connection");
 const mapProperties = require("../utils/map-properties");
 
+//get all of the movies
 function list() {
   return knex("movies").select("*");
 }
 
+//get all of the movies where is_showing = true
 function listIsShowing() {
   return knex("movies as m")
     .join("movies_theaters as mt", "m.movie_id", "mt.movie_id")
@@ -14,6 +16,7 @@ function listIsShowing() {
     .orderBy("m.movie_id");
 }
 
+//get the movie with the given movie id
 function read(movieId) {
   return (
     knex("movies")
@@ -24,6 +27,7 @@ function read(movieId) {
   );
 }
 
+//get all of the theaters that are showing the movie with the given movie id
 function listTheaters(movieId) {
   return knex("theaters as t")
     .join("movies_theaters as mt", "mt.theater_id", "t.theater_id")
@@ -32,6 +36,7 @@ function listTheaters(movieId) {
     .where({ "mt.movie_id": movieId });
 }
 
+//add critic property to review
 const addCritic = mapProperties({
   new_critic_id: "critic.critic_id",
   preferred_name: "critic.preferred_name",
@@ -41,6 +46,8 @@ const addCritic = mapProperties({
   critics_updated_at: "critic.updated_at",
 });
 
+//get all the reviews that are about the movie with the given movie id
+//map through each review and group all the critic info into its own object called critic
 function listReviews(movieId) {
   return knex("movies as m")
     .join("reviews as r", "r.movie_id", "m.movie_id")
